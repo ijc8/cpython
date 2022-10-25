@@ -2157,7 +2157,7 @@ AS_CASE([$ac_sys_system],
 
     dnl increase initial memory and stack size, move stack first
     dnl https://github.com/WebAssembly/wasi-libc/issues/233
-    AS_VAR_APPEND([LDFLAGS_NODIST], [" -z stack-size=524288 -Wl,--stack-first -Wl,--initial-memory=10485760"])
+    AS_VAR_APPEND([LDFLAGS_NODIST], [" -z stack-size=524288 -Wl,--stack-first -Wl,--initial-memory=10485760 -Wl,--export=setup -Wl,--export=process"])
   ]
 )
 
