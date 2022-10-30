@@ -19,13 +19,30 @@ void *setup(float sample_rate) {
     // Load module.
     pName = PyUnicode_FromString("main");
     pModule = PyImport_Import(pName);
+    if (pModule == NULL) {
+        PyErr_Print();
+        return NULL;
+    }
     Py_DECREF(pName);
     pSetup = PyObject_GetAttrString(pModule, "setup");
+    if (pSetup == NULL) {
+        PyErr_Print();
+        return NULL;
+    }
     pProcess = PyObject_GetAttrString(pModule, "process");
+    if (pProcess == NULL) {
+        PyErr_Print();
+        return NULL;
+    }
     Py_DECREF(pModule);
 
     // Call `setup()`.
-    Py_DECREF(PyObject_CallFunction(pSetup, "f", sample_rate));
+    pValue = PyObject_CallFunction(pSetup, "f", sample_rate);
+    if (pValue == NULL) {
+        PyErr_Print();
+        return NULL;
+    }
+    Py_DECREF(pValue);
     Py_DECREF(pSetup);
 
     // Set up `memoryview` object and argument tuple for calls to `process()`.
